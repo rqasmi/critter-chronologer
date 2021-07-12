@@ -2,14 +2,17 @@ package com.project.critter.service;
 
 import com.project.critter.entity.Customer;
 import com.project.critter.entity.Pet;
+import com.project.critter.exception.CustomerNotFoundException;
 import com.project.critter.repository.CustomerRepository;
 import com.project.critter.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class PetService {
 
     @Autowired
@@ -36,6 +39,8 @@ public class PetService {
 
     public List<Pet> getPetsByOwner(Long ownerId) {
         Customer owner = customerRepository.find(ownerId);
+        if(owner == null)
+            throw new CustomerNotFoundException("An owner with the given id does not exist");
         return petRepository.getPetsByOwner(owner);
     }
 

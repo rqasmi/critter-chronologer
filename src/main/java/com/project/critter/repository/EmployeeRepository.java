@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 import java.time.DayOfWeek;
 import java.util.List;
 
-@Transactional
+
 @Repository
 public class EmployeeRepository {
     @PersistenceContext

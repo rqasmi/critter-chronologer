@@ -1,6 +1,7 @@
 package com.project.critter.repository;
 
 import com.project.critter.entity.Customer;
+import com.project.critter.entity.Pet;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +11,6 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-@Transactional
 public class CustomerRepository {
     @PersistenceContext
     private EntityManager entityManager;
@@ -34,9 +34,9 @@ public class CustomerRepository {
         return query.getResultList();
     }
 
-    public Customer getOwnerByPet(Long petId) {
+    public Customer getOwnerByPet(Pet pet) {
         TypedQuery<Customer> query = entityManager.createNamedQuery("Customer.findByPet", Customer.class);
-        query.setParameter("id", petId);
+        query.setParameter("p", pet);
         return query.getSingleResult();
     }
 }

@@ -29,19 +29,19 @@ public class ScheduleController {
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         Schedule schedule = scheduleService.schedulePetsWithEmployeesForActivity(
                 scheduleDTO.getPetIds(), scheduleDTO.getEmployeeIds(), scheduleDTO.getActivities(), convertScheduleDtoToSchedule(scheduleDTO));
-        return convertScheduleToScheduleDto(scheduleDTO.getActivities(), schedule);
+        return convertScheduleToScheduleDto(schedule);
     }
 
     @GetMapping
     public List<ScheduleDTO> getAllSchedules() {
-        return scheduleService.getAllSchedules().stream().map(s -> convertScheduleToScheduleDto(s.getEmployees().get(0).getSkills(), s)).collect(Collectors.toList());
+        return scheduleService.getAllSchedules().stream().map(s -> convertScheduleToScheduleDto(s)).collect(Collectors.toList());
     }
 
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
         return scheduleService.getScheduleForPet(petId)
                 .stream()
-                .map(s -> convertScheduleToScheduleDto(s.getEmployees().get(0).getSkills(), s))
+                .map(s -> convertScheduleToScheduleDto(s))
                 .collect(Collectors.toList());
     }
 
@@ -49,7 +49,7 @@ public class ScheduleController {
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
         return scheduleService.getScheduleForEmployee(employeeId)
                 .stream()
-                .map(s -> convertScheduleToScheduleDto(s.getEmployees().get(0).getSkills(), s))
+                .map(s -> convertScheduleToScheduleDto(s))
                 .collect(Collectors.toList());
     }
 
@@ -57,13 +57,12 @@ public class ScheduleController {
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
         return scheduleService.getScheduleForCustomer(customerId)
                 .stream()
-                .map(s -> convertScheduleToScheduleDto(s.getEmployees().get(0).getSkills(), s))
+                .map(s -> convertScheduleToScheduleDto(s))
                 .collect(Collectors.toList());
     }
 
-    public ScheduleDTO convertScheduleToScheduleDto(Set<EmployeeSkill> skillSet, Schedule schedule) {
+    public ScheduleDTO convertScheduleToScheduleDto(Schedule schedule) {
         ScheduleDTO scheduleDto = new ScheduleDTO();
-        scheduleDto.setActivities(skillSet);
         scheduleDto.setEmployeeIds(schedule.getEmployees().stream().map(Employee::getId).collect(Collectors.toList()));
         scheduleDto.setPetIds(schedule.getPets().stream().map(Pet::getId).collect(Collectors.toList()));
         BeanUtils.copyProperties(schedule, scheduleDto);

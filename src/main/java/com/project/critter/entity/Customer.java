@@ -18,7 +18,7 @@ import java.util.List;
         ),
         @NamedQuery(
                 name = "Customer.findByPet",
-                query = "select p.owner from Pet p where p.id = :id"
+                query = "select c from Customer c where :p MEMBER OF c.pets"
         )
 })
 public class Customer {

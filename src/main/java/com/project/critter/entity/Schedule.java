@@ -3,6 +3,7 @@ package com.project.critter.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @NamedQueries({
         @NamedQuery(
@@ -47,6 +48,12 @@ public class Schedule {
     )
     private List<Employee> employees;
 
+    @ElementCollection(targetClass = EmployeeSkill.class)
+    @JoinTable(name = "activity_tbl", joinColumns = { @JoinColumn (name = "schedule_id")})
+    @Column(name = "activity", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Set<EmployeeSkill> activities;
+
     public Schedule() {
     }
 
@@ -80,5 +87,13 @@ public class Schedule {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+    }
+
+    public Set<EmployeeSkill> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<EmployeeSkill> activities) {
+        this.activities = activities;
     }
 }

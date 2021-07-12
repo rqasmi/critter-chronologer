@@ -302,7 +302,7 @@ public class CritterFunctionalTest {
 
     private static void compareSchedules(ScheduleDTO sched1, ScheduleDTO sched2) {
         Assertions.assertEquals(sched1.getPetIds(), sched2.getPetIds());
-//        Assertions.assertEquals(sched1.getActivities(), sched2.getActivities());
+        Assertions.assertEquals(sched1.getActivities(), sched2.getActivities());
         Assertions.assertEquals(sched1.getEmployeeIds(), sched2.getEmployeeIds());
         Assertions.assertEquals(sched1.getDate(), sched2.getDate());
     }
