@@ -24,6 +24,8 @@ public class PetService {
     public Pet save(Long ownerId, Pet pet) {
         Pet returnedPet = petRepository.merge(pet);
         Customer owner = customerRepository.find(ownerId);
+        if(owner == null)
+            throw new CustomerNotFoundException("A customer with the given id does not exist");
         returnedPet.setOwner(owner);
         owner.addPet(returnedPet);
         return returnedPet;

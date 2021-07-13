@@ -2,6 +2,7 @@ package com.project.critter.service;
 
 import com.project.critter.entity.Employee;
 import com.project.critter.entity.EmployeeSkill;
+import com.project.critter.exception.EmployeeNotFoundException;
 import com.project.critter.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class EmployeeService {
 
     public void setAvailability(Long employeeId, Set<DayOfWeek> daysAvailable) {
         Employee employee = employeeRepository.find(employeeId);
+        if(employee == null)
+            throw new EmployeeNotFoundException("An employee with the given id does not exist");
         employee.setDaysAvailable(daysAvailable);
     }
 
